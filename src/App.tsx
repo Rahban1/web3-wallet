@@ -14,7 +14,6 @@ interface WalletInfo {
 }
 
 export default function Component() {
-  const [darkMode, setDarkMode] = useState(false)
   const [mnemonic, setMnemonic] = useState<string[]>(Array(12).fill(''))
   const [isGenerated, setIsGenerated] = useState(false)
   const [error, setError] = useState<string | null>(null)
