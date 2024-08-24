@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react"
-import { Wallet, HDNodeWallet } from "ethers";
+import  { useState, useEffect } from "react"
+import {  HDNodeWallet } from "ethers";
 import { Loader2 } from "lucide-react"
 import { mnemonicToSeed } from "bip39";
 
@@ -20,7 +20,6 @@ export default function EthWallet({ mnemonic }: EthWalletProps) {
         const seed = await mnemonicToSeed(mnemonic);
         const hdNode = HDNodeWallet.fromSeed(seed);
         const wallet = hdNode.derivePath("m/44'/60'/0'/0/0")
-        const privateKey = wallet.privateKey
         const address = wallet.address
 
         setWallet({ address: address })

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { mnemonicToSeed } from "bip39"
 import { derivePath } from "ed25519-hd-key"
 import { Keypair, PublicKey } from "@solana/web3.js"

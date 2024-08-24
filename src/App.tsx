@@ -46,7 +46,7 @@ export default function Component() {
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
+      <Navbar/>
       <main className="container mx-auto px-4 py-8">
         <div className="flex flex-col items-center gap-8">
           <button
