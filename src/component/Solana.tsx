@@ -6,10 +6,11 @@ import nacl from "tweetnacl"
 import { Loader2 } from "lucide-react"
 
 interface SolanaWalletProps {
-  mnemonic: string
+  mnemonic: string;
+  path: string;
 }
 
-export default function SolanaWallet({ mnemonic }: SolanaWalletProps) {
+export default function SolanaWallet({ mnemonic, path }: SolanaWalletProps) {
   const [wallet, setWallet] = useState<{ publicKey: PublicKey } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -20,9 +21,8 @@ export default function SolanaWallet({ mnemonic }: SolanaWalletProps) {
       setError(null)
       try {
         const seed = await mnemonicToSeed(mnemonic)
-        const path = `m/44'/501'/0'/0'`
         const derivedSeed = derivePath(path, seed.toString("hex")).key
-        const secret = nacl.sign.keyPair.fromSeed(derivedSeed).secretKey
+        const secret = nacl.sign.keyPair.fromSeed(Uint8Array.from(derivedSeed)).secretKey
         const keypair = Keypair.fromSecretKey(secret)
 
         setWallet({ publicKey: keypair.publicKey })
@@ -37,7 +37,7 @@ export default function SolanaWallet({ mnemonic }: SolanaWalletProps) {
     if (mnemonic) {
       createWallet()
     }
-  }, [mnemonic])
+  }, [mnemonic, path])
 
   if (isLoading) {
     return (

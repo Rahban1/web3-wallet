@@ -9,8 +9,9 @@ import Navbar from './component/Navbar'
 type WalletType = 'solana' | 'ethereum'
 
 interface WalletInfo {
-  type: WalletType
-  id: string
+  type: WalletType;
+  id: string;
+  path: string;
 }
 
 export default function Component() {
@@ -26,15 +27,23 @@ export default function Component() {
       setMnemonic(newMnemonic.split(' '))
       setIsGenerated(true)
       setError(null)
+      setWallets([]);
     } catch (err) {
       setError('Failed to generate mnemonic. Please try again.')
     }
   }
 
   const addWallet = (type: WalletType) => {
+    const accountIndex = wallets.filter((w) => w.type === type).length;
+    const path =
+      type === "solana"
+        ? `m/44'/501'/${accountIndex}'/0'`
+        : `m/44'/60'/0'/0/${accountIndex}`;
+
     const newWallet: WalletInfo = {
       type,
-      id: `${type}-${Date.now()}`
+      id: `${type}-${Date.now()}`,
+      path,
     }
     setWallets([...wallets, newWallet])
   }
@@ -113,9 +122,9 @@ export default function Component() {
                     </button>
                   </div>
                   {wallet.type === 'solana' ? (
-                    <SolanaWallet mnemonic={mnemonic.join(' ')} />
+                    <SolanaWallet mnemonic={mnemonic.join(' ')} path={wallet.path} />
                   ) : (
-                    <EthWallet mnemonic={mnemonic.join(' ')} />
+                    <EthWallet mnemonic={mnemonic.join(' ')} path={wallet.path}/>
                   )}
                 </div>
               ))}

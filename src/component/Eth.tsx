@@ -4,10 +4,11 @@ import { Loader2 } from "lucide-react"
 import { mnemonicToSeed } from "bip39";
 
 interface EthWalletProps {
-  mnemonic: string
+  mnemonic: string;
+  path: string
 }
 
-export default function EthWallet({ mnemonic }: EthWalletProps) {
+export default function EthWallet({ mnemonic, path }: EthWalletProps) {
   const [wallet, setWallet] = useState<{ address: string } | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -18,8 +19,8 @@ export default function EthWallet({ mnemonic }: EthWalletProps) {
       setError(null)
       try {
         const seed = await mnemonicToSeed(mnemonic);
-        const hdNode = HDNodeWallet.fromSeed(seed);
-        const wallet = hdNode.derivePath("m/44'/60'/0'/0/0")
+        const hdNode = HDNodeWallet.fromSeed(Uint8Array.from(seed));
+        const wallet = hdNode.derivePath(path)
         const address = wallet.address
 
         setWallet({ address: address })
@@ -34,7 +35,7 @@ export default function EthWallet({ mnemonic }: EthWalletProps) {
     if (mnemonic) {
       createWallet()
     }
-  }, [mnemonic])
+  }, [mnemonic, path])
 
   if (isLoading) {
     return (
